@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="在澳洲，一次检索公司官网与主流招聘平台的职位。" />
+    <title>JobAtlas Community · 澳洲职位检索</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <style>
+      :root {
+        --ink: #13212b;
+        --muted: #65737c;
+        --line: #d7e0e3;
+        --soft: #f3f7f6;
+        --paper: #fbfcfa;
+        --mint: #b9e2d4;
+        --teal: #147d74;
+        --orange: #ef8256;
+        --shadow: 0 18px 50px rgba(19, 33, 43, 0.08);
+      }
+      * { box-sizing: border-box; }
+      html { background: var(--paper); }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 84% -10%, rgba(185, 226, 212, .55), transparent 35rem),
+          var(--paper);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      button, input, select { font: inherit; }
+      button { cursor: pointer; }
+      a { color: inherit; }
+      .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding: 22px 0 18px; }
+      .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+      .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; color: #fff; background: var(--teal); font-weight: 800; box-shadow: 4px 4px 0 var(--orange); }
+      .brand-name { font-weight: 800; letter-spacing: -.03em; }
+      .brand-note { color: var(--muted); font-size: .82rem; margin-left: 4px; }
+      .topbar-actions { display: flex; gap: 10px; align-items: center; }
+      .link-button, .outline-button { border: 1px solid var(--line); background: rgba(255,255,255,.7); color: var(--ink); border-radius: 10px; padding: 9px 13px; }
+      .link-button { border-color: transparent; background: transparent; color: var(--muted); }
+      .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 36px; align-items: end; padding: 56px 0 40px; }
+      .eyebrow { display: inline-flex; gap: 8px; align-items: center; color: var(--teal); font-size: .82rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+      .eyebrow-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+      h1 { margin: 14px 0 16px; max-width: 680px; font-size: clamp(2.5rem, 5vw, 4.8rem); line-height: .98; letter-spacing: -.065em; }
+      .hero-copy { max-width: 610px; color: var(--muted); font-size: 1.08rem; }
+      .hero-aside { padding: 20px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.65); box-shadow: var(--shadow); }
+      .hero-aside strong { display: block; margin-bottom: 8px; font-size: 1.05rem; }
+      .hero-aside p { margin: 0; color: var(--muted); font-size: .92rem; }
+      .search-panel { padding: 18px; border: 1px solid #b7d6cd; border-radius: 18px; background: #eff8f4; box-shadow: var(--shadow); }
+      .search-row { display: grid; grid-template-columns: minmax(0, 1.3fr) 160px 190px auto; gap: 10px; }
+      .field { display: flex; flex-direction: column; gap: 6px; }
+      .field label { color: var(--muted); font-size: .8rem; font-weight: 700; }
+      .field input, .field select { width: 100%; min-height: 46px; padding: 10px 13px; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; outline: none; }
+      .field input:focus, .field select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(20,125,116,.14); }
+      .search-button { align-self: end; min-height: 46px; padding: 10px 18px; color: #fff; border: 0; border-radius: 10px; background: var(--teal); font-weight: 800; }
+      .search-button:hover { background: #0f665f; }
+      .trust-row { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 13px; color: var(--muted); font-size: .84rem; }
+      .trust-row span::before { content: "✓"; color: var(--teal); font-weight: 900; margin-right: 5px; }
+      .alert-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 20px; align-items: center; margin-top: 14px; padding: 17px 18px; border: 1px solid #efc9b8; border-radius: 16px; background: #fff7f3; }
+      .alert-panel strong { display: block; margin-bottom: 4px; }
+      .alert-panel p { margin: 0; color: var(--muted); font-size: .86rem; }
+      .alert-form { display: grid; grid-template-columns: minmax(0, 1fr) 145px auto; gap: 8px; }
+      .alert-form input, .alert-form select { min-height: 43px; padding: 9px 11px; border: 1px solid #e8c9bd; border-radius: 9px; background: #fff; color: var(--ink); }
+      .alert-button { min-height: 43px; padding: 9px 14px; border: 0; border-radius: 9px; color: #fff; background: var(--orange); font-weight: 800; }
+      .alert-message { grid-column: 2; color: #a4542e !important; font-size: .78rem !important; }
+      .workspace { display: grid; grid-template-columns: 245px minmax(0, 1fr); gap: 26px; padding: 38px 0 80px; }
+      .filters { align-self: start; position: sticky; top: 18px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.72); }
+      .filters h2 { margin: 0 0 18px; font-size: 1rem; }
+      .filter-group { padding: 15px 0; border-top: 1px solid var(--line); }
+      .filter-group:first-of-type { border-top: 0; padding-top: 0; }
+      .filter-group label { display: flex; justify-content: space-between; gap: 10px; align-items: center; padding: 7px 0; color: var(--muted); font-size: .9rem; }
+      .filter-group input { accent-color: var(--teal); }
+      .filter-count { color: #9ba7aa; font-size: .78rem; }
+      .reset { width: 100%; margin-top: 10px; padding: 9px; border: 1px dashed #aac3bd; border-radius: 9px; color: var(--teal); background: transparent; }
+      .results-head { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: end; margin-bottom: 13px; }
+      .results-head h2 { margin: 0; font-size: 1.35rem; letter-spacing: -.03em; }
+      .results-meta { color: var(--muted); font-size: .88rem; }
+      .sort-select { padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: #fff; }
+      .cards { display: grid; gap: 12px; }
+      .job-card { padding: 19px 20px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.82); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+      .job-card:hover { transform: translateY(-2px); border-color: #9ecbc0; box-shadow: 0 12px 30px rgba(19,33,43,.07); }
+      .job-top { display: flex; justify-content: space-between; gap: 16px; }
+      .job-title { margin: 0 0 5px; font-size: 1.1rem; letter-spacing: -.025em; }
+      .company { color: var(--muted); font-size: .92rem; }
+      .save-button { width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: #fff; font-size: 1.05rem; }
+      .save-button.saved { color: var(--orange); border-color: #f1bdab; background: #fff7f3; }
+      .tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 17px 0 16px; }
+      .tag { padding: 5px 9px; border-radius: 7px; background: var(--soft); color: #4f6269; font-size: .8rem; }
+      .tag.source { color: var(--teal); background: #e5f5ee; font-weight: 800; }
+      .job-bottom { display: flex; justify-content: space-between; gap: 14px; align-items: center; padding-top: 13px; border-top: 1px solid #edf0ef; }
+      .job-meta-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 16px; }
+      .job-meta { padding: 9px 10px; border-radius: 9px; background: #f7faf9; }
+      .job-meta small { display: block; margin-bottom: 2px; color: var(--muted); font-size: .72rem; }
+      .job-meta strong { font-size: .86rem; }
+      .job-meta.salary strong { color: var(--teal); }
+      .job-meta.status strong { color: #a4542e; }
+      .freshness { color: var(--muted); font-size: .8rem; }
+      .freshness strong { color: var(--teal); }
+      .apply-link { display: inline-flex; align-items: center; gap: 5px; color: var(--teal); font-weight: 800; font-size: .86rem; text-decoration: none; }
+      .empty { display: none; padding: 40px 20px; border: 1px dashed #aac3bd; border-radius: 16px; color: var(--muted); text-align: center; background: #f8fcfa; }
+      .disclaimer { margin-top: 18px; color: var(--muted); font-size: .78rem; }
+      .footer { padding: 22px 0 36px; border-top: 1px solid var(--line); color: var(--muted); font-size: .82rem; }
+      @media (max-width: 900px) { .hero { grid-template-columns: 1fr; gap: 18px; padding-top: 38px; } .workspace { grid-template-columns: 1fr; } .filters { position: static; } .filter-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 14px; } .filter-group h3 { grid-column: 1 / -1; } .alert-panel { grid-template-columns: 1fr; } .alert-message { grid-column: 1; } }
+      @media (max-width: 600px) { .shell { width: min(100% - 22px, 1180px); } .topbar { padding-top: 15px; } .brand-note, .topbar-actions .link-button { display: none; } h1 { font-size: 3rem; } .search-row { grid-template-columns: 1fr; } .search-button { width: 100%; } .filter-group { display: block; } .job-top, .job-bottom { align-items: flex-start; flex-direction: column; } .job-bottom { gap: 10px; } .job-meta-grid { grid-template-columns: 1fr; } .sort-select { width: 100%; } .alert-form { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="shell topbar">
+      <a class="brand" href="./" aria-label="JobAtlas 首页"><span class="brand-mark">J</span><span class="brand-name">JobAtlas</span><span class="brand-note">Community Edition</span></a>
+      <nav class="topbar-actions" aria-label="页面导航"><button class="link-button" type="button" id="savedNav">已收藏 <span id="savedCount">0</span></button><button class="outline-button" type="button" id="aboutButton">数据说明</button></nav>
+    </header>
+
+    <main class="shell">
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span>一次检索更多官方职位</div>
+          <h1 id="page-title">帮你一次性锁定更多工作岗位，不用再一个个去找。</h1>
+          <p class="hero-copy">JobAtlas 把澳洲公司官网、ATS 和主流招聘平台放到同一个检索入口。你不用每天重复打开几十个招聘页面；先按职业、地点和条件筛选，再决定要不要去官方申请。</p>
+        </div>
+        <aside class="hero-aside"><strong>澳洲版的覆盖顺序</strong><p>先接入澳洲头部银行、科技、矿业、航空、零售、医疗、咨询和建筑公司，再扩充到其他雇主。每家公司都按职业类别保存官方来源、薪资、招聘状态与更新时间。</p></aside>
+      </section>
+
+      <section class="search-panel" aria-label="职位搜索">
+        <div class="search-row">
+          <div class="field"><label for="keyword">职位、技能或公司</label><input id="keyword" type="search" placeholder="例如：data engineer、AI、CSL" autocomplete="off" /></div>
+          <div class="field"><label for="location">地点</label><select id="location"><option value="all">所有地点</option><option>Melbourne</option><option>Sydney</option><option>Brisbane</option><option>Perth</option><option>Remote / Australia</option></select></div>
+          <div class="field"><label for="category">职业类别</label><select id="category"><option value="all">全部类别</option><option value="it">IT & Data</option><option value="engineering">Engineering</option><option value="marketing">Marketing & Communications</option><option value="finance">Finance & Accounting</option><option value="audit">Audit & Risk</option><option value="healthcare">Healthcare & Nursing</option><option value="medical">Doctors & Medical</option><option value="construction">Construction & Property</option><option value="legal">Legal & Compliance</option><option value="operations">Operations & Supply Chain</option><option value="sales">Sales & Customer</option><option value="education">Education & Research</option><option value="government">Government & Public</option><option value="people">HR & People</option><option value="design">Design & Creative</option><option value="retail">Hospitality & Retail</option></select></div>
+          <button class="search-button" id="searchButton" type="button">检索职位</button>
+        </div>
+        <div class="trust-row"><span>官网 / ATS 来源优先</span><span>显示薪资与招聘状态</span><span>IT 优先，覆盖全职业</span></div>
+      </section>
+
+      <section class="alert-panel" aria-label="订阅职位提醒">
+        <div><strong>不想每天重复搜索？订阅职位提醒</strong><p>设定你关心的职位条件，之后有新职位或状态变化时，按你选择的频率提醒你。</p></div>
+        <form class="alert-form" id="alertForm"><input id="alertEmail" type="email" placeholder="你的邮箱" aria-label="接收提醒的邮箱" required /><select id="alertFrequency" aria-label="提醒频率"><option value="即时">即时提醒</option><option value="每日">每日摘要</option><option value="每周">每周摘要</option></select><button class="alert-button" type="submit">开启提醒</button><p class="alert-message" id="alertMessage" role="status"></p></form>
+      </section>
+
+      <section class="workspace" aria-label="职位结果">
+        <aside class="filters">
+          <h2>缩小结果</h2>
+          <div class="filter-group"><strong>来源</strong><label><span>公司官网 / ATS</span><input type="checkbox" value="official" data-filter="source" checked /></label><label><span>SEEK</span><input type="checkbox" value="seek" data-filter="source" checked /></label><label><span>LinkedIn</span><input type="checkbox" value="linkedin" data-filter="source" checked /></label></div>
+          <div class="filter-group"><strong>工作方式</strong><label><span>全职</span><input type="checkbox" value="full-time" data-filter="type" checked /></label><label><span>合同 / 项目</span><input type="checkbox" value="contract" data-filter="type" checked /></label><label><span>远程 / 混合</span><input type="checkbox" value="remote" data-filter="mode" checked /></label></div>
+          <div class="filter-group"><strong>招聘状态</strong><label><span>招聘中</span><input type="checkbox" value="open" data-filter="status" checked /></label><label><span>即将截止</span><input type="checkbox" value="closing" data-filter="status" checked /></label></div>
+          <button class="reset" id="resetButton" type="button">重置筛选</button>
+        </aside>
+
+        <div class="results">
+          <div class="results-head"><div><h2>适合你的职位</h2><div class="results-meta" id="resultsMeta">正在显示演示结果</div></div><select class="sort-select" id="sortSelect" aria-label="排序方式"><option value="fresh">最近确认</option><option value="salary-desc">薪资从高到低</option><option value="match">匹配度优先</option></select></div>
+          <div class="cards" id="cards"></div>
+          <div class="empty" id="empty">没有找到符合条件的职位。试试更宽泛的关键词，或取消一个来源筛选。</div>
+          <p class="disclaimer">演示版说明：上面的职位是产品原型用的示例数据，不代表当前开放职位。正式版会按职业类别接入澳洲头部公司及其他雇主的官网 / ATS，持续确认招聘状态，并保留官方申请链接、首次发现时间和最近确认时间。签证不作为第一层筛选条件，后续可作为职位属性显示。</p>
+        </div>
+      </section>
+    </main>
+    <footer class="shell footer">JobAtlas Community · 让澳洲职位搜索更接近真实的招聘源头</footer>
+
+    <script>
+      const jobs = [
+        { id: 1, title: "Data Engineer", company: "CSL", location: "Melbourne", category: "it", categoryLabel: "IT & Data", source: "official", sourceLabel: "公司官网 / ATS", type: "full-time", mode: "hybrid", updated: 1, freshness: "1 天前确认", firstSeen: "首次发现 1 天前", lastChecked: "最近确认今天 09:40", salary: "A$125k–145k", salaryValue: 145, status: "open", statusLabel: "招聘中", match: 96, tags: ["Python", "SQL", "AWS"], applyUrl: "https://www.csl.com/careers" },
+        { id: 2, title: "Senior Construction Project Manager", company: "Lendlease", location: "Sydney", category: "construction", categoryLabel: "Construction & Property", source: "official", sourceLabel: "公司官网 / ATS", type: "full-time", mode: "onsite", updated: 1, freshness: "1 天前确认", firstSeen: "首次发现 1 天前", lastChecked: "最近确认今天 08:20", salary: "A$180k–220k", salaryValue: 220, status: "open", statusLabel: "招聘中", match: 82, tags: ["Construction", "Delivery", "Safety"], applyUrl: "https://www.lendlease.com/au/careers/" },
+        { id: 3, title: "AI Product Analyst", company: "Atlassian", location: "Sydney", category: "it", categoryLabel: "IT & Data", source: "official", sourceLabel: "公司官网 / ATS", type: "full-time", mode: "remote", updated: 2, freshness: "2 天前确认", firstSeen: "首次发现 2 天前", lastChecked: "最近确认今天 09:10", salary: "A$135k–165k", salaryValue: 165, status: "open", statusLabel: "招聘中", match: 91, tags: ["AI", "Product", "Experimentation"], applyUrl: "https://www.atlassian.com/company/careers" },
+        { id: 4, title: "Registered Nurse — Emergency", company: "Ramsay Health Care", location: "Brisbane", category: "healthcare", categoryLabel: "Healthcare & Nursing", source: "official", sourceLabel: "公司官网 / ATS", type: "full-time", mode: "onsite", updated: 2, freshness: "2 天前确认", firstSeen: "首次发现 2 天前", lastChecked: "最近确认昨天 19:30", salary: "A$85k–105k", salaryValue: 105, status: "closing", statusLabel: "即将截止", match: 78, tags: ["Nursing", "Emergency", "Clinical"], applyUrl: "https://www.ramsayhealth.com.au/careers" },
+        { id: 5, title: "Brand Marketing Manager", company: "Canva", location: "Sydney", category: "marketing", categoryLabel: "Marketing & Communications", source: "official", sourceLabel: "公司官网 / ATS", type: "full-time", mode: "hybrid", updated: 3, freshness: "3 天前确认", firstSeen: "首次发现 3 天前", lastChecked: "最近确认昨天 17:00", salary: "A$130k–155k", salaryValue: 155, status: "open", statusLabel: "招聘中", match: 88, tags: ["Brand", "Campaigns", "Growth"], applyUrl: "https://www.canva.com/careers/" },
+        { id: 6, title: "Analytics Engineer", company: "Woolworths Group", location: "Sydney", category: "it", categoryLabel: "IT & Data", source: "seek", sourceLabel: "SEEK", type: "full-time", mode: "hybrid", updated: 3, freshness: "3 天前确认", firstSeen: "首次发现 3 天前", lastChecked: "最近确认昨天 14:15", salary: "A$120k–140k", salaryValue: 140, status: "open", statusLabel: "招聘中", match: 89, tags: ["dbt", "Snowflake", "Looker"], applyUrl: "https://www.woolworthsgroup.com.au/au/en/careers.html" },
+        { id: 7, title: "Audit & Assurance Senior", company: "Deloitte Australia", location: "Melbourne", category: "audit", categoryLabel: "Audit & Risk", source: "official", sourceLabel: "公司官网 / ATS", type: "full-time", mode: "hybrid", updated: 4, freshness: "4 天前确认", firstSeen: "首次发现 4 天前", lastChecked: "最近确认昨天 12:30", salary: "A$95k–125k", salaryValue: 125, status: "open", statusLabel: "招聘中", match: 81, tags: ["Audit", "Risk", "CA / CPA"], applyUrl: "https://www.deloitte.com/au/en/careers.html" },
+        { id: 8, title: "Financial Accountant", company: "Qantas", location: "Brisbane", category: "finance", categoryLabel: "Finance & Accounting", source: "official", sourceLabel: "公司官网 / ATS", type: "contract", mode: "hybrid", updated: 4, freshness: "4 天前确认", firstSeen: "首次发现 4 天前", lastChecked: "最近确认昨天 11:00", salary: "A$100k–120k", salaryValue: 120, status: "closing", statusLabel: "即将截止", match: 84, tags: ["Reporting", "Excel", "CPA"], applyUrl: "https://www.qantas.com/au/en/qantas-careers.html" },
+        { id: 9, title: "Machine Learning Engineer", company: "Commonwealth Bank", location: "Sydney", category: "it", categoryLabel: "IT & Data", source: "linkedin", sourceLabel: "LinkedIn", type: "full-time", mode: "hybrid", updated: 5, freshness: "5 天前确认", firstSeen: "首次发现 5 天前", lastChecked: "最近确认前天 16:45", salary: "A$145k–175k", salaryValue: 175, status: "open", statusLabel: "招聘中", match: 87, tags: ["ML", "MLOps", "GCP"], applyUrl: "https://www.commbank.com.au/about-us/careers.html" },
+        { id: 10, title: "Medical Registrar", company: "Healthscope", location: "Melbourne", category: "medical", categoryLabel: "Doctors & Medical", source: "official", sourceLabel: "公司官网 / ATS", type: "contract", mode: "onsite", updated: 5, freshness: "5 天前确认", firstSeen: "首次发现 5 天前", lastChecked: "最近确认前天 13:30", salary: "A$140k–190k", salaryValue: 190, status: "open", statusLabel: "招聘中", match: 75, tags: ["Medicine", "Hospital", "Registrar"], applyUrl: "https://healthscope.com.au/careers" },
+        { id: 11, title: "Procurement & Supply Chain Lead", company: "BHP", location: "Perth", category: "operations", categoryLabel: "Operations & Supply Chain", source: "official", sourceLabel: "公司官网 / ATS", type: "full-time", mode: "onsite", updated: 6, freshness: "6 天前确认", firstSeen: "首次发现 6 天前", lastChecked: "最近确认前天 10:20", salary: "A$150k–185k", salaryValue: 185, status: "open", statusLabel: "招聘中", match: 79, tags: ["Procurement", "Mining", "SAP"], applyUrl: "https://www.bhp.com/careers" },
+        { id: 12, title: "Digital Communications Advisor", company: "Telstra", location: "Remote / Australia", category: "marketing", categoryLabel: "Marketing & Communications", source: "official", sourceLabel: "公司官网 / ATS", type: "full-time", mode: "remote", updated: 7, freshness: "7 天前确认", firstSeen: "首次发现 7 天前", lastChecked: "最近确认 3 天前", salary: "A$100k–130k", salaryValue: 130, status: "open", statusLabel: "招聘中", match: 80, tags: ["Content", "Digital", "Stakeholder"], applyUrl: "https://www.telstra.com.au/careers" }
+      ];
+      const state = { saved: new Set(), query: "", location: "all", category: "all", sort: "fresh" };
+      const cards = document.getElementById("cards");
+      const empty = document.getElementById("empty");
+      const meta = document.getElementById("resultsMeta");
+      const selected = (type) => [...document.querySelectorAll(`[data-filter="${type}"]:checked`)].map((input) => input.value);
+      function matches(job) {
+        const needle = state.query.trim().toLowerCase();
+        const text = `${job.title} ${job.company} ${job.categoryLabel} ${job.tags.join(" ")}`.toLowerCase();
+        return (!needle || text.includes(needle)) && (state.location === "all" || job.location === state.location) && (state.category === "all" || job.category === state.category) && selected("source").includes(job.source) && selected("type").includes(job.type) && selected("status").includes(job.status) && (job.mode !== "remote" || selected("mode").includes("remote"));
+      }
+      function cardMarkup(job) {
+        return `<article class="job-card"><div class="job-top"><div><h3 class="job-title">${job.title}</h3><div class="company">${job.company} · ${job.location} · ${job.categoryLabel}</div></div><button class="save-button ${state.saved.has(job.id) ? "saved" : ""}" aria-label="${state.saved.has(job.id) ? "取消收藏" : "收藏"} ${job.title}" data-save="${job.id}" type="button">${state.saved.has(job.id) ? "★" : "☆"}</button></div><div class="tags"><span class="tag source">${job.sourceLabel}</span><span class="tag">${job.mode === "remote" ? "Remote" : job.mode === "hybrid" ? "Hybrid" : "On-site"}</span>${job.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div><div class="job-meta-grid"><div class="job-meta salary"><small>薪资（AUD）</small><strong>${job.salary}</strong></div><div class="job-meta status"><small>招聘状态</small><strong>${job.statusLabel}</strong></div><div class="job-meta"><small>更新时间</small><strong>${job.freshness}</strong></div></div><div class="job-bottom"><span class="freshness">${job.firstSeen} · ${job.lastChecked} · 匹配度 ${job.match}%</span><a class="apply-link" href="${job.applyUrl}" target="_blank" rel="noreferrer" data-apply="${job.id}">查看官方申请 <span aria-hidden="true">↗</span></a></div></article>`;
+      }
+      function render() {
+        const visible = jobs.filter(matches).sort((a, b) => state.sort === "match" ? b.match - a.match : state.sort === "salary-desc" ? b.salaryValue - a.salaryValue : a.updated - b.updated);
+        cards.innerHTML = visible.map(cardMarkup).join("");
+        empty.style.display = visible.length ? "none" : "block";
+        meta.textContent = `找到 ${visible.length} 个演示职位 · 官网来源 ${visible.filter((job) => job.source === "official").length} 个 · 覆盖 ${new Set(visible.map((job) => job.category)).size} 类职业`;
+        document.getElementById("savedCount").textContent = state.saved.size;
+        document.querySelectorAll("[data-save]").forEach((button) => button.addEventListener("click", () => { const id = Number(button.dataset.save); state.saved.has(id) ? state.saved.delete(id) : state.saved.add(id); render(); }));
+      }
+      document.getElementById("searchButton").addEventListener("click", () => { state.query = document.getElementById("keyword").value; state.location = document.getElementById("location").value; state.category = document.getElementById("category").value; render(); });
+      document.getElementById("keyword").addEventListener("keydown", (event) => { if (event.key === "Enter") document.getElementById("searchButton").click(); });
+      document.getElementById("sortSelect").addEventListener("change", (event) => { state.sort = event.target.value; render(); });
+      document.querySelectorAll("[data-filter]").forEach((input) => input.addEventListener("change", render));
+      document.getElementById("resetButton").addEventListener("click", () => { document.querySelectorAll("[data-filter]").forEach((input) => { input.checked = true; }); document.getElementById("keyword").value = ""; document.getElementById("location").value = "all"; document.getElementById("category").value = "all"; state.query = ""; state.location = "all"; state.category = "all"; render(); });
+      document.getElementById("aboutButton").addEventListener("click", () => alert("JobAtlas 的核心判断：职位不应该只存在于一个招聘平台。正式版会优先接入公司官网和 ATS 的公开职位源，并保留来源、更新时间与状态。") );
+      document.getElementById("savedNav").addEventListener("click", () => { state.query = ""; state.location = "all"; state.category = "all"; document.getElementById("keyword").value = ""; document.getElementById("location").value = "all"; document.getElementById("category").value = "all"; const savedJobs = jobs.filter((job) => state.saved.has(job.id)); cards.innerHTML = savedJobs.map(cardMarkup).join(""); empty.style.display = savedJobs.length ? "none" : "block"; meta.textContent = savedJobs.length ? `已收藏 ${savedJobs.length} 个职位` : "还没有收藏职位"; });
+      document.getElementById("alertForm").addEventListener("submit", (event) => { event.preventDefault(); const email = document.getElementById("alertEmail").value.trim(); const frequency = document.getElementById("alertFrequency").value; document.getElementById("alertMessage").textContent = `${email} 已加入 ${frequency}提醒候选名单（演示版，尚未发送真实邮件）。`; });
+      render();
+    </script>
+  </body>
+</html>

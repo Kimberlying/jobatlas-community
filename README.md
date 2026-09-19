@@ -11,7 +11,8 @@ The Community Edition provides a transparent, self-hostable search interface for
 - Sorting by freshness, salary, and match score
 - Salary, first-seen time, last-checked time, status, and official application links
 - Local saved-job interactions
-- A non-sending job-alert interface prototype
+- Non-sending Email, Telegram, Discord, and WhatsApp alert configuration prototypes
+- Three switchable visual themes: Forest Mist, Paper, and Night Watch
 - Responsive layouts for phone, tablet, and desktop
 
 ## Run locally
@@ -23,7 +24,7 @@ No build step or dependency installation is required.
 
 ## Data notice
 
-All job records bundled with this repository are sample data for product demonstration. They are not assertions that those jobs are currently open. The alert form does not transmit or store email addresses.
+All job records bundled with this repository are sample data for product demonstration. They are not assertions that those jobs are currently open. The alert form does not transmit or store contact details.
 
 A production deployment should replace sample records with legally collected public job data and retain source attribution, official application URLs, and check timestamps.
 
